@@ -8,6 +8,24 @@
     <title>nolo</title>
   </head>
   <body>
+    <div class="hud">
+      <button type="button" id="start-btn">
+        <span id="start-btn-text">BEGIN</span>
+      </button>
+      <div class="speed-controls">
+        <button type="button" id="speed-down-btn" aria-label="Decrease speed">
+          -
+        </button>
+        <button type="button" id="speed-up-btn" aria-label="Increase speed">
+          +
+        </button>
+      </div>
+    </div>
+
+    <div id="alert-message" class="alert" aria-live="polite" hidden>
+      DRAW SOME SQUARES FIRST!
+    </div>
+
     <canvas></canvas>
     <script type="module" src="/src/main.ts"></script>
   </body>

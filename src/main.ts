@@ -1,6 +1,5 @@
 import { Grid } from "./grid";
 import { GameOfLife } from "./game";
-import { UI } from "./ui";
 
 const canvas = document.querySelector("canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -19,7 +18,21 @@ const grid = new Grid({
   block_size: BLOCK_SIZE
 });
 
-const ui = new UI({ width: GAME_WIDTH, height: GAME_HEIGHT });
+const start_btn = document.getElementById("start-btn") as HTMLButtonElement;
+const start_btn_text = document.getElementById(
+  "start-btn-text"
+) as HTMLSpanElement;
+const speed_down_btn = document.getElementById(
+  "speed-down-btn"
+) as HTMLButtonElement;
+const speed_up_btn = document.getElementById(
+  "speed-up-btn"
+) as HTMLButtonElement;
+const alert_el = document.getElementById("alert-message") as HTMLDivElement;
+
+// center alert message based on canvas dimensions
+alert_el.style.left = `${GAME_WIDTH / 2 - 50 * 8}px`;
+alert_el.style.top = `${GAME_HEIGHT / 2 - 50}px`;
 
 const game = new GameOfLife({
   width: GAME_WIDTH,
@@ -33,35 +46,39 @@ const game = new GameOfLife({
       // drawing handled in render step; kept for parity hook
     },
     onShowAlert: () => {
-      ui.alert_message.style.display = "block";
+      alert_el.hidden = false;
     },
     onHideAlert: () => {
-      ui.alert_message.style.display = "none";
+      alert_el.hidden = true;
     },
     onSetButtonText: (text) => {
-      ui.button_text.textContent = text;
+      start_btn_text.textContent = text;
     },
     onSetStartButtonColor: (color) => {
-      ui.start_button.style.backgroundColor = color;
+      start_btn.style.backgroundColor = color;
     },
     onSetSpeedDownColor: (color) => {
-      ui.speed_down_btn.style.backgroundColor = color;
+      speed_down_btn.style.backgroundColor = color;
     },
     onSetSpeedUpColor: (color) => {
-      ui.speed_up_btn.style.backgroundColor = color;
+      speed_up_btn.style.backgroundColor = color;
     },
-    onResetButtonColors: () => ui.reset_btn_colors()
+    onResetButtonColors: () => {
+      speed_down_btn.style.backgroundColor = "";
+      speed_up_btn.style.backgroundColor = "";
+      start_btn.style.backgroundColor = "";
+    }
   }
 });
 
 // Input wiring
-ui.start_button.addEventListener("click", () => {
+start_btn.addEventListener("click", () => {
   game.handle_mouse_down({ x: -1, y: -1, hitStartButton: true });
 });
-ui.speed_down_btn.addEventListener("click", () => {
+speed_down_btn.addEventListener("click", () => {
   game.handle_mouse_down({ x: -1, y: -1, hitSpeedDown: true });
 });
-ui.speed_up_btn.addEventListener("click", () => {
+speed_up_btn.addEventListener("click", () => {
   game.handle_mouse_down({ x: -1, y: -1, hitSpeedUp: true });
 });
 
